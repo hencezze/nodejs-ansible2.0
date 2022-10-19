@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  become: true
+  vars:
+    git_repo: '/git/repo'
+    node_repo: '/node/repo'
+  roles:
+    - nodejs-role
+    - git-role   

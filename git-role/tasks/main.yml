@@ -1,0 +1,11 @@
+---
+    - name: Git-role |  Git clone
+      git:
+        repo: https://github.com/hencezze/stoled-nodejs-repo.git
+        dest: '{{ git_repo }}'
+
+    - name: Git-role | Install packages from package.json
+      command: 'npm install {{ git_repo }}/package.json'
+
+    - name: Start server with NodeJS helps
+      command: 'node {{ git_repo }}/index.js &'

@@ -1,0 +1,30 @@
+---
+    - name: Install NodeJS | Get latest version
+      uri:
+        url: https://api.github.com/repos/nodejs/node/releases/latest
+        body_format: json
+      register: page
+    - name: debug
+      debug: 
+        var: page.json.tag_name
+    
+    - name: Install NodeJS | Create NodeJS folder
+      file:
+        path: '{{ node_repo }}'
+        state: directory 
+     
+    - name: Install NodeJS | Download latest version
+      get_url:
+        url: https://nodejs.org/dist/{{ page.json.tag_name }}/node-{{ page.json.tag_name }}-linux-x64.tar.xz
+        dest: '{{ node_repo }}'
+        mode: '777'
+     
+    - name: Install NodeJS | Unarchive NodeJS
+      unarchive:
+        src: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64.tar.xz'
+        dest: '{{ node_repo }}'
+        mode: '777'
+        remote_src: true
+       
+    - name: Install NodeJS | Symlink into /usr/bin
+      command: ' mv {{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/bin/node /usr/bin/node' 
