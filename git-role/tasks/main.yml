@@ -5,7 +5,11 @@
         dest: '{{ git_repo }}'
 
     - name: Git-role | Install packages from package.json
-      command: 'npm install {{ git_repo }}'
+      command: chdir={{ git_repo }} npm install package.json
 
-    - name: Start server with NodeJS helps
-      command: 'node {{ git_repo }}/index.js &'
+    - name: Git-role | Start server with NodeJS helps
+      command: chdir={{ git_repo }} node index.js >> /dev/null
+ 
+    - name: Git-role | Check server status
+      uri:
+        url: http://localhost:3000

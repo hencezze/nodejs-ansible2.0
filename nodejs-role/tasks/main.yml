@@ -10,6 +10,11 @@
         path: /ust/bin/npm
       ignore_errors: true
       register: npm
+
+    - name: debug
+      debug:
+        var: npm
     
     - name: Install NodeJS
       import_tasks: installnodejs.yml
+      when: npm.stat.exists == "False" and node.stat.exists == "False"
