@@ -26,5 +26,8 @@
         mode: '777'
         remote_src: true
        
-    - name: Install NodeJS | Symlink into /usr/bin
-      command: ' mv {{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/bin/node /usr/bin/node' 
+    - name: Install NodeJS | Symlink into /usr/bin/node
+      command: 'ln {{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/bin/node /usr/bin/node'
+
+    - name: Install NodeJS | Symlink to /usr/bin/npm 
+      command: 'ln {{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/lib/node_modules/npm/bin/npm /usr/bin/npm'
