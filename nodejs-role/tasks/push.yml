@@ -1,0 +1,19 @@
+---
+- name: Pushing repo | Pushing bin repo
+  copy:
+    src: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/bin'
+    dest: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64'
+- name: Pushing repo | Pushing lib repo
+  copy:
+    src: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/lib'
+    dest: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64'
+
+- name: Pushing repo | Pushing share repo
+  copy:
+    src: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/share'
+    dest: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64'
+
+- name: Pushing repo | Pushing include repo
+  copy:
+    src: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/include'
+    dest: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64'

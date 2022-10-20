@@ -1,6 +1,6 @@
 ---
 
-- hosts: localhost
+- hosts: ansible
   become: true
   vars:
     git_repo: '/git/repo'

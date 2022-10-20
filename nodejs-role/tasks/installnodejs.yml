@@ -11,13 +11,16 @@
     - name: Install NodeJS | Create NodeJS folder
       file:
         path: '{{ node_repo }}'
-        state: directory 
+        state: directory
+      delegate_to: 127.0.0.1 
      
     - name: Install NodeJS | Download latest version
       get_url:
         url: https://nodejs.org/dist/{{ page.json.tag_name }}/node-{{ page.json.tag_name }}-linux-x64.tar.xz
         dest: '{{ node_repo }}'
         mode: '777'
+      delegate_to: 127.0.0.1
+
      
     - name: Install NodeJS | Unarchive NodeJS
       unarchive:
@@ -25,9 +28,31 @@
         dest: '{{ node_repo }}'
         mode: '777'
         remote_src: true
-       
-    - name: Install NodeJS | Symlink into /usr/bin/node
-      command: 'ln {{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/bin/node /usr/bin/node'
+      delegate_to: 127.0.0.1
 
-    - name: Install NodeJS | Symlink to /usr/bin/npm 
-      command: 'ln {{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/lib/node_modules/npm/bin/npm /usr/bin/npm'
+    - name: Install NodeJS | Create NodeJS folder on remote VM
+      file:
+        path: '{{ node_repo }}'
+        state: directory
+
+    - name: Install NodeJS | Pushing unarchived nodejs repo
+      import_tasks: push.yml
+
+    - name: Install NodeJS | Symlink into /usr/bin/node
+      file:
+        src: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/bin/node'
+        dest: '/usr/bin/node'
+        state: link
+        mode: '777'
+
+    - name: Install NodeJS | Add npm file
+      template:
+        src: npm
+        dest: /node/repo/node-v19.0.0-linux-x64/lib/node_modules/npm/bin/npm
+
+    - name: Install NodeJS | Symlink into /usr/bin/npm
+      file:
+        src: '{{ node_repo }}/node-{{ page.json.tag_name }}-linux-x64/lib/node_modules/npm/bin/npm'
+        dest: /usr/bin/npm
+        state: link
+        mode: '777'
