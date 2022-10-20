@@ -7,7 +7,7 @@
 
     - name: Was npm installed
       stat:
-        path: /ust/bin/npm
+        path: /usr/bin/npm
       ignore_errors: true
       register: npm
 
@@ -17,3 +17,4 @@
     
     - name: Install NodeJS
       import_tasks: installnodejs.yml
+      when: node.stat.exists == 'False' and npm.stat.exists == 'False'
